@@ -1,0 +1,17 @@
+.wrapper{
+    display:grid;
+    grid-template-columns: auto auto;
+}
+
+.copied{
+    background-color:rgb(62, 62, 62);
+    color:rgb(96, 96, 96);
+}
+
+p{
+    color:rgb(247, 247, 247);
+}
+body{
+    background-color: rgb(36, 33, 33);
+    color:rgb(247, 247, 247);
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Map</title>
+    <!--add stylesheet  -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="utilities.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div>
+            <!--add a label for the input -->
+            <label for="target">Enter a Character name</label>
+            <!-- add text input field-->
+            <br />
+            <input type="text" id="target" placeholder="Name">
+
+            <!-- add a button that onclick calls generateCommand() with the target and location as parameters-->
+            <!--<button onclick="generateCommand(document.getElementById('target').value, document.getElementById('location').innerText)">Generate Command</button>-->
+            <p type="text" id="command-text">!map -t target -move location</p>
+            <!-- button to copy to commandText inner html to clipboard-->
+            <button id="button-copy" onclick="copyToClipboard(document.getElementById('command-text').innerHTML)">Copy
+                to Clipboard</button>
+            <!-- add text output field-->
+            <p id="distance">_ft</p>
+
+        </div>
+        <div>
+            <canvas id="canvas" width:"1024" height:"1024" style="border:1px solid #d3d3d3;"></canvas>
+            <script src="grid.js"></script>
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
