@@ -25,7 +25,61 @@
                 to Clipboard</button>
             <!-- add text output field-->
             <p id="distance">_ft</p>
-
+            <h1>Update Options</h1>
+            <form id="options-form">
+                <label for="maxCellSize">Max Cell Size:</label>
+                <input type="number" id="maxCellSize" name="maxCellSize" value="40"><br>
+        
+                <label for="columns">Columns:</label>
+                <input type="number" id="columns" name="columns" value="40"><br>
+        
+                <label for="rows">Rows:</label>
+                <input type="number" id="rows" name="rows" value="30"><br>
+        
+                <label for="backgroundColor">Background Color:</label>
+                <input type="color" id="backgroundColor" name="backgroundColor" value="#4a685a"><br>
+        
+                <label for="gridColor">Grid Color:</label>
+                <input type="color" id="gridColor" name="gridColor" value="#000000"><br>
+        
+                <label for="gridLineWidth">Grid Line Width:</label>
+                <input type="number" id="gridLineWidth" name="gridLineWidth" value="2"><br>
+        
+                <label for="borderColor">Border Color:</label>
+                <input type="color" id="borderColor" name="borderColor" value="#ffffff"><br>
+        
+                <label for="maxWidth">Max Width:</label>
+                <input type="number" id="maxWidth" name="maxWidth" value="1200"><br>
+        
+                <label for="maxHeight">Max Height:</label>
+                <input type="number" id="maxHeight" name="maxHeight" value="1000"><br>
+        
+                <label for="padding">Padding:</label>
+                <input type="number" id="padding" name="padding" value="20"><br>
+        
+                <label for="textColor">Text Color:</label>
+                <input type="color" id="textColor" name="textColor" value="#000000"><br>
+        
+                <label for="topColor">Top Color:</label>
+                <input type="color" id="topColor" name="topColor" value="#ffffff"><br>
+        
+                <label for="bottomColor">Bottom Color:</label>
+                <input type="color" id="bottomColor" name="bottomColor" value="#ffffff"><br>
+        
+                <label for="leftColor">Left Color:</label>
+                <input type="color" id="leftColor" name="leftColor" value="#ffffff"><br>
+        
+                <label for="rightColor">Right Color:</label>
+                <input type="color" id="rightColor" name="rightColor" value="#ffffff"><br>
+        
+                <label for="circleColor">Circle Color:</label>
+                <input type="color" id="circleColor" name="circleColor" value="#ff0000"><br>
+        
+                <label for="scale">Scale:</label>
+                <input type="number" id="scale" name="scale" value="5"><br>
+        
+                <input type="submit" value="Submit">
+            </form>
         </div>
         <div>
             <canvas id="canvas" width:"1024" height:"1024" style="border:1px solid #d3d3d3;"></canvas>

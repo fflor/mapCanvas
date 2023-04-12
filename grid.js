@@ -1,7 +1,7 @@
 // create options object
 const options = {
   maxCellSize: 40,
-  columns: 33,
+  columns: 40,
   rows: 30,
   backgroundColor: "rgb(74, 104, 90)",
   gridColor: "#000000",
@@ -274,20 +274,20 @@ function getDistance(x1, y1, x2, y2) {
    
   
 }
-function drawArrow(x, y) {
-  //get the last location
-  let lastLocation = locations[locations.length - 1];
-  //get the last location coordinates
-  let lastLocationCoords = lastLocation.split(",");
-  let lastX = parseInt(lastLocationCoords[0]);
-  let lastY = parseInt(lastLocationCoords[1]);
-  //get the distance
-  let distance = getDistance(lastX, lastY, x, y);
-  //get the cell name
-  let cellName = getCellName(x, y);
-  //draw the arrow
-  drawArrowBetween(lastX, lastY, x, y, cellName, distance);
-}
+//function drawArrow(x, y) {
+//  //get the last location
+//  let lastLocation = locations[locations.length - 1];
+//  //get the last location coordinates
+//  let lastLocationCoords = lastLocation.split(",");
+//  let lastX = parseInt(lastLocationCoords[0]);
+//  let lastY = parseInt(lastLocationCoords[1]);
+//  //get the distance
+//  let distance = getDistance(lastX, lastY, x, y);
+//  //get the cell name
+//  let cellName = getCellName(x, y);
+//  //draw the arrow
+//  drawArrowBetween(lastX, lastY, x, y, cellName, distance);
+//}
 /*
  *generate command
  *example !map -t test -move AB9
@@ -310,9 +310,12 @@ canvas.addEventListener("mousedown", (event) => {
   let location = getCoords(event);
   let x = location[0];
   let y = location[1];
+  let previousLocation = '';
 
+  
   if (event.shiftKey) {
-    drawArrow(x, y);
+     
+    erase(x,y);
 
     
   } else {
@@ -323,15 +326,49 @@ canvas.addEventListener("mousedown", (event) => {
     if(locations.length === 1){
       document.getElementById("distance").innerHTML = `distance: 0 ft`;
     } else {
-      let previousLocation = locations[locations.length - 2].split(",");
+      if (locations.length > 1 ){
+        previousLocation = locations[locations.length - 2].split(",");
+      }
       let distance = getDistance(previousLocation[0], previousLocation[1], x, y);
       document.getElementById("distance").innerHTML = `distance: ${distance} ft`;
-      erase(previousLocation[0], previousLocation[1]);
+      
     }
    
     //generate the command
     generateCommand(document.getElementById("target").value, cellName);
   }
+});
+const optionsForm = document.getElementById("options-form");
+
+optionsForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  options.maxCellSize = parseInt(document.getElementById("maxCellSize").value);
+  options.columns = parseInt(document.getElementById("columns").value);
+  options.rows = parseInt(document.getElementById("rows").value);
+  options.backgroundColor = document.getElementById("backgroundColor").value;
+  options.gridColor = document.getElementById("gridColor").value;
+  options.gridLineWidth = parseInt(document.getElementById("gridLineWidth").value);
+  options.borderColor = document.getElementById("borderColor").value;
+  options.maxWidth = parseInt(document.getElementById("maxWidth").value);
+  options.maxHeight = parseInt(document.getElementById("maxHeight").value);
+  options.padding = parseInt(document.getElementById("padding").value);
+  options.textColor = document.getElementById("textColor").value;
+  options.topColor = document.getElementById("topColor").value;
+  options.bottomColor = document.getElementById("bottomColor").value;
+  options.leftColor = document.getElementById("leftColor").value;
+  options.rightColor = document.getElementById("rightColor").value;
+  options.circleColor = document.getElementById("circleColor").value;
+  options.scale = parseInt(document.getElementById("scale").value);
+   cellSize = setCellSize();
+ 
+  
+    locations = [];
+   gridHeight = cellSize * options.rows;
+    gridWidth = cellSize * options.columns;
+  canvas.width = Math.min(gridWidth + options.padding * 2, options.maxWidth);
+  canvas.height = Math.min(gridHeight + options.padding * 2, options.maxHeight);
+  draw();
 });
 
 draw();
