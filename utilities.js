@@ -17,4 +17,24 @@ function copyToClipboard(copyText){
 
 
 }
+
+function roundToMultiple(mutliple){
+    let input = document.getElementById("reach-distance");
+    let value = input.value;
+    let rounded = Math.round(value / mutliple) * mutliple;
+    input.value = rounded;
+}
+
+
+ function toggleCollapse(id){
+    id = document.querySelector("#" + id);
+            id.classList.toggle("active");
+            let content = id.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
  
+}
+

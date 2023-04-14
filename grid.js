@@ -17,6 +17,7 @@ const options = {
   rightColor: "#ffffff",
   circleColor: "red",
   scale: 5,
+  backgroundImage: ""
 };
 //set cellSize
 function setCellSize() {
@@ -40,7 +41,27 @@ let gridWidth = cellSize * options.columns;
 canvas.width = Math.min(gridWidth + options.padding * 2, options.maxWidth);
 canvas.height = Math.min(gridHeight + options.padding * 2, options.maxHeight);
 /**
+ * add the background image
+ * @param source - the image source url
+ */
+function setBackgroundImage(source) {
+  if (source != "") {
+    let img = new Image();
+    img.src = source;
+
+    img.onload = function () {
+      ctx.drawImage(img, options.padding, options.padding, canvas.width - (2* options.padding), canvas.height - (2*options.padding));
+      drawGridLines();
+    };
+    
+  }
+}
+
+
+
+/**
  * Draw the border
+ * 
  */
 function drawBorder() {
   // undo options.padding and any pan before drawing the border
@@ -259,8 +280,6 @@ function getCoords(event) {
     Math.max(Math.floor(mouseY / cellSize), 1),
     options.rows
   );
-  // console.log("mouseX mouseY : " + mouseX + " " + mouseY);
-  // console.log("coords: " + xCoord + " " + yCoord);
   return [xCoord, yCoord];
 }
 //get the distance between two points
@@ -274,6 +293,50 @@ function getDistance(x1, y1, x2, y2) {
    
   
 }
+//highlight squares reachable from a given square
+function highlightReachableSquares(x, y, distance) {
+  //get coordinates of top left corner 
+  const topX = x - 1 - distance/options.scale;
+  const topY = y - 1 - distance/options.scale;
+  //limit startX to 0 to options.columns
+  const startX = Math.min( Math.max(Math.floor(topX), 0), options.columns);
+  //limit topY to 0 to options.rows
+  const startY = Math.min( Math.max(Math.floor(topY), 0), options.rows);
+
+  //get coordinates of bottom right corner
+  const bottomX = x  + distance/options.scale;
+  const bottomY = y  + distance/options.scale;
+  //limit endX to 0 to options.columns
+  const endX = Math.min( Math.max(Math.floor(bottomX), 0), options.columns);
+  //limit endY to 0 to options.rows
+  const endY = Math.min( Math.max(Math.floor(bottomY), 0), options.rows);
+  //get the distance from start to end
+  const width = endX - startX;
+  const height = endY - startY;
+
+  //draw a rectangle
+  ctx.save();
+  ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
+  ctx.fillRect(startX * cellSize + options.padding, startY * cellSize + options.padding, width * cellSize, height * cellSize);
+  ctx.restore();
+}
+const reachForm = document.getElementById("reach-form");
+reachForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  //get the distance
+  const distance = parseInt(reachForm.elements["reach-distance"].value);
+  //get the last location
+  let lastLocation = locations[locations.length - 1];
+  //get the last location coordinates
+  let lastLocationCoords = lastLocation.split(",");
+  let lastX = parseInt(lastLocationCoords[0]);
+  let lastY = parseInt(lastLocationCoords[1]);
+  //highlight squares reachable from the last location
+  highlightReachableSquares(lastX, lastY, distance);
+});
+ 
+ 
+
 //function drawArrow(x, y) {
 //  //get the last location
 //  let lastLocation = locations[locations.length - 1];
@@ -343,23 +406,20 @@ const optionsForm = document.getElementById("options-form");
 optionsForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  options.maxCellSize = parseInt(document.getElementById("maxCellSize").value);
   options.columns = parseInt(document.getElementById("columns").value);
   options.rows = parseInt(document.getElementById("rows").value);
+  options.maxCellSize = parseInt(document.getElementById("maxCellSize").value);
+  options.maxWidth = parseInt(document.getElementById("maxWidth").value);
+  options.maxHeight = parseInt(document.getElementById("maxHeight").value);
+
   options.backgroundColor = document.getElementById("backgroundColor").value;
   options.gridColor = document.getElementById("gridColor").value;
   options.gridLineWidth = parseInt(document.getElementById("gridLineWidth").value);
   options.borderColor = document.getElementById("borderColor").value;
-  options.maxWidth = parseInt(document.getElementById("maxWidth").value);
-  options.maxHeight = parseInt(document.getElementById("maxHeight").value);
+
   options.padding = parseInt(document.getElementById("padding").value);
   options.textColor = document.getElementById("textColor").value;
-  options.topColor = document.getElementById("topColor").value;
-  options.bottomColor = document.getElementById("bottomColor").value;
-  options.leftColor = document.getElementById("leftColor").value;
-  options.rightColor = document.getElementById("rightColor").value;
-  options.circleColor = document.getElementById("circleColor").value;
-  options.scale = parseInt(document.getElementById("scale").value);
+ 
    cellSize = setCellSize();
  
   
@@ -369,6 +429,12 @@ optionsForm.addEventListener("submit", (event) => {
   canvas.width = Math.min(gridWidth + options.padding * 2, options.maxWidth);
   canvas.height = Math.min(gridHeight + options.padding * 2, options.maxHeight);
   draw();
+});
+
+//update circle color
+const circleColor = document.getElementById("circleColor");
+circleColor.addEventListener("change", (event) => {
+  options.circleColor = event.target.value;
 });
 
 draw();
